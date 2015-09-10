@@ -4,6 +4,10 @@ import os
 
 fontDirectory = "C:\Windows\Fonts/".replace("\\","/")
 
+#list of fonts I like
+fonts = ["BRADHITC.ttf", "CALIFR.ttf", "GOTHIC.ttf", "ChaparralPro-LightIt.ttf",
+		 "ITCEDSCR.ttf", "simfang.ttf", "IMPRISHA.ttf", "INFROMAN.ttf",
+		  ""]
 
 def watermarkTest():
 	filepaths = ["C:/Users/Ricky/Pictures/redditWallpaper/goodPics/", "D:/Users/Ricky/Downloads/" ]
@@ -28,7 +32,7 @@ def watermarkTest():
 	height = txt.size[1]
 
 	# get a font
-	fnt = ImageFont.truetype(fontDirectory + "trebucit.ttf", 100)
+	fnt = ImageFont.truetype(fontDirectory + "BRADHITC.ttf", 100)
 	#print fnt.getSize("Hello World")
 	# get a drawing context
 	d = ImageDraw.Draw(txt)
