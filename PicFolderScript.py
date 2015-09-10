@@ -147,3 +147,9 @@ DEBUG:
 	pictures on random topics. Example: Kanye West, and it would find
 	pictures of kanye as the wallpaper theme for the get_top_from_day
 """
+
+"""
+For the watermark in pick a corner for the best placement when i download each picture. 
+So when each pciture is moved to ghe good directory it is displayed and prompts for the 
+best corner so as not to cover important details of the picture
+"""

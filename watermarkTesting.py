@@ -1,13 +1,26 @@
 ########## Watermark testing ##########
 from PIL import Image, ImageDraw, ImageFont
+import os
 
 fontDirectory = "C:\Windows\Fonts/".replace("\\","/")
 
-def watermarkTest():
-	# get an image
-	file = "C:\Users\Ricky\Pictures/redditWallpaper\goodPics/".replace("\\","/")
 
-	base = Image.open(file + 'Never disc.jpg').convert('RGBA')
+def watermarkTest():
+	filepaths = ["C:/Users/Ricky/Pictures/redditWallpaper/goodPics/", "D:/Users/Ricky/Downloads/" ]
+	filepath = ""
+	for item in filepaths:
+		if os.path.exists(item):
+			filepath = item
+
+	pictures = ['Never disc.jpg', 'partypat.jpg']
+	picture = ""
+	# for item in pictures:
+	# 	if os.path.exists(filepath + picture):
+	# 		picture = item
+	# 		print picture
+
+	print filepath + picture
+	base = Image.open(filepath + pictures[1]).convert('RGBA')
 
 	# make a blank image for the text, initialized to transparent text color
 	txt = Image.new('RGBA', base.size, (255,255,255,0))
@@ -26,11 +39,11 @@ def watermarkTest():
 	d.text((10,60), "World", font=fnt, fill=(255,255,255,255))
 
 	out = Image.alpha_composite(base, txt)
-
+	print out
 	out.show()
 
 def font():
-	
+
 	image = Image.new("RGBA", (100,100), (255, 255, 255))
 
 	draw = ImageDraw.Draw(image)
@@ -45,4 +58,4 @@ def font():
 
 	draw.text((10, 25), "world", font=font)
 
-font()
+watermarkTest()
