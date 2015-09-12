@@ -12,14 +12,26 @@ r = praw.Reddit(user_agent=user_agent)
 dicPic = {}
 goodPics = []
 cont = True
-rawDirectory = "C:/Users/Ricky/Pictures/redditWallpaper/rawPics/"
-goodDirectory = "C:/Users/Ricky/Pictures/redditWallpaper/goodPics"
+rawDirectoryList = ["C:/Users/Ricky/Pictures/redditWallpaper/rawPics/", 
+						"D:/Users/Ricky/Pictures/redditWallpaper/rawPics"] 
+goodDirectoryList = ["C:/Users/Ricky/Pictures/redditWallpaper/goodPics/", 
+						"D:/Users/Ricky/Pictures/redditWallpaper/goodPics"]
+rawDirectory = ""
+goodDirectory = ""
+subInput = ""
+
+for path1, path2 in rawDirectoryList, goodDirectoryList:
+	if os.path.exists(path1):
+		rawDirectory = path1
+	if os.path.exists(path2):
+		goodDirectory = path2
 
 limit = 15
 
 ######### Function Definitions ##########
 
-def pullFrom__(submissions):
+def pullFrom__(submissions, sub):
+	print sub
 	counter = 0
 	#get x submissions
 	submissions = submissions
@@ -55,19 +67,20 @@ def runner():
 	if "y" == str(raw_input("Do you want to clean the folder?")):
 		cleaner()
 	else:
-		sub = r.get_subreddit(str(raw_input("What subreddit do you want?")))
+		subInput = str(raw_input("What subreddit do you want?"))
+		sub = r.get_subreddit(subInput)
 		submissionType = {"day" : sub.get_top_from_day(limit=limit),
 				"week" : sub.get_top_from_week(limit=limit),
 				"hot" : sub.get_hot(limit=limit),
 				"all" : sub.get_top_from_all(limit=limit)}
 		if "y" == str(raw_input("Top from day?")):
-			pullFrom__(submissionType["day"])
+			pullFrom__(submissionType["day"], subInput)
 		if "y" == str(raw_input("Top from week?")):
-			pullFrom__(submissionType["week"])
+			pullFrom__(submissionType["week"], subInput)
 		if "y" == str(raw_input("Top from all?")):
-			pullFrom__(submissionType["all"])
+			pullFrom__(submissionType["all"], subInput)
 		if "y" == str(raw_input("From Hot?")):
-			pullFrom__(submissionType["hot"])
+			pullFrom__(submissionType["hot"], subInput)
 
 def dateSorted(path):
     mtime = lambda f: os.stat(os.path.join(path, f)).st_mtime

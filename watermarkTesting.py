@@ -8,46 +8,63 @@ fontDirectory = "C:\Windows\Fonts/".replace("\\","/")
 fonts = ["BRADHITC.ttf", "CALIFR.ttf", "GOTHIC.ttf", "ChaparralPro-LightIt.ttf",
 		 "ITCEDSCR.ttf", "simfang.ttf", "IMPRISHA.ttf", "INFROMAN.ttf",
 		  ""]
+filepaths = ["C:/Users/Ricky/Pictures/redditWallpaper/goodPics/", "D:/Users/Ricky/Pictures/redditWallpaper/goodPics/"
+			,"D:/Users/Ricky/Downloads/" ]
+filepath = ""
+for item in filepaths:
+	if os.path.exists(item):
+		filepath = item
+		break
 
-def watermarkTest():
-	filepaths = ["C:/Users/Ricky/Pictures/redditWallpaper/goodPics/", "D:/Users/Ricky/Downloads/" ]
-	filepath = ""
-	for item in filepaths:
-		if os.path.exists(item):
-			filepath = item
+pictures = ['Never disc.jpg', 'partypat.jpg', 'Undergroun.jpg']
+picture = ""
+# for item in pictures:
+# 	if os.path.exists(filepath + picture):
+# 		picture = item
+# 		print picture
 
-	pictures = ['Never disc.jpg', 'partypat.jpg']
-	picture = ""
-	# for item in pictures:
-	# 	if os.path.exists(filepath + picture):
-	# 		picture = item
-	# 		print picture
+image = Image.open(filepath + pictures[2]).convert('RGBA')
+imageWidth = image.size[0]
+imageHeight = image.size[1]
+#same size as image
+emptyBase = Image.new('RGBA', image.size, (255,255,255,0))
 
-	print filepath + picture
-	base = Image.open(filepath + pictures[1]).convert('RGBA')
-
+def watermarkTest(subreddit):
+	textBase = emptyBase
 	# make a blank image for the text, initialized to transparent text color
-	txt = Image.new('RGBA', base.size, (255,255,255,0))
-	width = txt.size[0]
-	height = txt.size[1]
+	width = image.size[0]
+	height = image.size[1]
 
 	# get a font
-	fnt = ImageFont.truetype(fontDirectory + "BRADHITC.ttf", 100)
-	#print fnt.getSize("Hello World")
-	# get a drawing context
-	d = ImageDraw.Draw(txt)
+	fnt = ImageFont.truetype(fontDirectory + "BRADHITC.ttf", size=200)
+	# creates an object that will be drawn onto textBase
+	draw = ImageDraw.Draw(textBase)
 
 	# draw text, half opacity
-	d.text((5 * width / 6, 5 * height / 6), "Hello World", font=fnt, fill=(0,0,255,128))
-	# draw text, full opacity
-	d.text((10,60), "World", font=fnt, fill=(255,255,255,255))
+	#print "image width:", imageWidth, "image height:", imageHeight
+	#print "1/6 width", 1 * imageWidth / 6, "1/6 height", 1 * imageHeight / 6
+	draw.text((width / 48, -1), subreddit, font=fnt, fill=(255, 255, 255,255))
 
-	out = Image.alpha_composite(base, txt)
-	print out
+	# draw text, full opacity
+	#print "the font width is:", draw.textsize(subreddit, font=fnt)[0]
+	#d.show()
+	textDimensions = draw.textsize(subreddit, font=fnt)
+	out = Image.alpha_composite(image, textBase)
+	outWithLines = Image.alpha_composite(out, textPlacementTest(emptyBase, textDimensions))
+	
 	out.show()
 
-def font():
 
+def textPlacementTest(imageLines, textDimensions):
+	draw = ImageDraw.Draw(imageLines)
+	for y in range(0, imageHeight, imageHeight / 12):
+		xY = ((0, y), (imageWidth, y))
+		draw.line(xY, fill=(0, 0, 255, 255), width=1)
+	xY = (imageWidth / 12, imageHeight / 12 , textDimensions[0], textDimensions[1])
+	#draw.rectangle(xY, fill=None, outline=(255,0,0,255))
+	return imageLines
+
+def font():
 	image = Image.new("RGBA", (100,100), (255, 255, 255))
 
 	draw = ImageDraw.Draw(image)
@@ -62,4 +79,5 @@ def font():
 
 	draw.text((10, 25), "world", font=font)
 
-watermarkTest()
+watermarkTest("/r/woahdude")
+#textPlacementTest()
