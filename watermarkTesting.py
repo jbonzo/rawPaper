@@ -30,6 +30,7 @@ imageHeight = image.size[1]
 emptyBase = Image.new('RGBA', image.size, (255,255,255,0))
 
 def watermarkTest(subreddit):
+
 	textBase = emptyBase
 	# make a blank image for the text, initialized to transparent text color
 	width = image.size[0]
@@ -37,22 +38,24 @@ def watermarkTest(subreddit):
 
 	# get a font
 	fnt = ImageFont.truetype(fontDirectory + "BRADHITC.ttf", size=200)
+	fntHeight = fnt.getsize(subreddit)[1]
 	# creates an object that will be drawn onto textBase
 	draw = ImageDraw.Draw(textBase)
 
 	# draw text, half opacity
 	#print "image width:", imageWidth, "image height:", imageHeight
 	#print "1/6 width", 1 * imageWidth / 6, "1/6 height", 1 * imageHeight / 6
-	draw.text((width / 48, -1), subreddit, font=fnt, fill=(255, 255, 255,255))
+	draw.text((width / 48, 47 * height / 48	- fntHeight), subreddit, font=fnt, fill=(255, 255, 255,255))
 
 	# draw text, full opacity
 	#print "the font width is:", draw.textsize(subreddit, font=fnt)[0]
 	#d.show()
 	textDimensions = draw.textsize(subreddit, font=fnt)
 	out = Image.alpha_composite(image, textBase)
-	outWithLines = Image.alpha_composite(out, textPlacementTest(emptyBase, textDimensions))
+	#outWithLines = Image.alpha_composite(out, textPlacementTest(emptyBase, textDimensions))
 	
-	out.show()
+	out.save(filepath + "test.jpg")
+	#out.show()
 
 
 def textPlacementTest(imageLines, textDimensions):
@@ -65,6 +68,7 @@ def textPlacementTest(imageLines, textDimensions):
 	return imageLines
 
 def font():
+
 	image = Image.new("RGBA", (100,100), (255, 255, 255))
 
 	draw = ImageDraw.Draw(image)
