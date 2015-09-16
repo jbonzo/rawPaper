@@ -1,6 +1,6 @@
 ######### Imports and variable assignments ##########
 
-import praw #reddit api wrapper which was bullshit to get on my laptop
+import praw #reddit python api wrapper 
 import urllib #used for downloading things and putting them places
 from PIL import Image #used for checking image specs
 import shutil #used for moving between directories
@@ -14,6 +14,8 @@ r = praw.Reddit(user_agent=user_agent)
 dicPic = {}
 goodPics = []
 cont = True
+
+
 rawDirectoryList = ["C:/Users/Ricky/Pictures/redditWallpaper/rawPics/", 
 						"D:/Users/Ricky/Pictures/redditWallpaper/rawPics/"] 
 goodDirectoryList = ["C:/Users/Ricky/Pictures/redditWallpaper/goodPics/", 
@@ -49,6 +51,8 @@ def pullFrom__(submissions, sub):
 	try:
 		for title, link in dicPic.iteritems():
 			#makes the string filename 
+			title = title.replace("\\", "")
+			title = title.replace("/", "")
 			rawFile = rawDirectory + title + ".jpg"
 			if rawFile[len(goodDirectory) - 1:] not in os.listdir(goodDirectory):
 				#downloads the link file and puts it in the drop zone
@@ -202,4 +206,15 @@ best corner so as not to cover important details of the picture
 
 I've played with this idea but it seems to be a bit annoying. For now I'll keep it on the top left corner untill
 I find a problem with this
+"""
+
+"""
+One thing I've noticed is that all my processing and downloading is taking place in one move
+For a more fluid run I should first download every into the rawDirectory and then transfer
+the good pictures into the goodDirectory and then once every picture is in I add the tag 
+all at the end with some kind of exit status
+
+It would be cool to figure out how to download and tag at the same time
+
+lol found it: http://stackoverflow.com/questions/18864859/python-executing-multiple-functions-simultaneously
 """
