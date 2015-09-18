@@ -1,6 +1,6 @@
 ######### Imports and variable assignments ##########
 
-import praw #reddit api wrapper which was bullshit to get on my laptop
+import praw #reddit api wrapper. Without python it's just raw
 import urllib #used for downloading things and putting them places
 from PIL import Image #used for checking image specs
 import shutil #used for moving between directories
@@ -8,7 +8,7 @@ import os #internal file use
 import time #used to pull time of file
 from PIL import ImageDraw, ImageFont #used for sub tagging
 from random import randint #used to get a random font
-
+from traceback import print_exception #debugging
 user_agent = "RedditWallpaper 1.0 by /u/jbonzo200"
 r = praw.Reddit(user_agent=user_agent)
 dicPic = {}
@@ -66,7 +66,8 @@ def pullFrom__(submissions, sub):
 		print counter
 	except IOError, e:
 		print rawFile[len(goodDirectory) - 1:]
-		print e
+		print_exception(IOError, e, None)
+		raise e
 		
 #parameter corner is the corner that the tag
 #will be placed on. Either top left (0) or 
@@ -82,7 +83,9 @@ def placeTag(subreddit, imageFile, corner):
 	#font = fonts[randint(0, len(fonts) - 1)]
 	font  = fonts[0]
 	#setting up image and its attributes
+	print "font"
 	image = Image.open(imageFile).convert('RGBA')
+	print "open"
 	imageWidth = image.size[0]
 	imageHeight = image.size[1]
 	textBase = Image.new('RGBA', image.size, (255, 255, 255, 0))
