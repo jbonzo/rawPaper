@@ -1,11 +1,7 @@
 ######### Imports and variable assignments ##########
 
-<<<<<<< HEAD
 
 import praw #reddit api wrapper. Without python it's just raw
-=======
-import praw #reddit api wrapper. Without python it's just raw=
->>>>>>> master
 import urllib #used for downloading things and putting them places
 from PIL import Image #used for checking image specs
 import shutil #used for moving between directories
@@ -15,9 +11,6 @@ from PIL import ImageDraw, ImageFont #used for sub tagging
 from random import randint #used to get a random font
 from traceback import print_exception #debugging
 import platform # to check what os we are on
-=======
-
->>>>>>> master
 user_agent = "RedditWallpaper 1.0 by /u/jbonzo200"
 r = praw.Reddit(user_agent=user_agent)
 dicPic = {}
