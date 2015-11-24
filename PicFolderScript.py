@@ -1,7 +1,11 @@
 ######### Imports and variable assignments ##########
 
+<<<<<<< HEAD
 
 import praw #reddit api wrapper. Without python it's just raw
+=======
+import praw #reddit api wrapper. Without python it's just raw=
+>>>>>>> master
 import urllib #used for downloading things and putting them places
 from PIL import Image #used for checking image specs
 import shutil #used for moving between directories
@@ -11,6 +15,9 @@ from PIL import ImageDraw, ImageFont #used for sub tagging
 from random import randint #used to get a random font
 from traceback import print_exception #debugging
 import platform # to check what os we are on
+=======
+
+>>>>>>> master
 user_agent = "RedditWallpaper 1.0 by /u/jbonzo200"
 r = praw.Reddit(user_agent=user_agent)
 dicPic = {}
@@ -54,7 +61,10 @@ def pullFrom__(submissions, sub):
 	    #if the url points to a jpg
 	    if urlString[len(urlString)-3:] == "jpg":
 	    	#add to dictionary
-	    	dicPic[str(x.title[:10]).strip("\"")] = urlString
+	    	try:
+	    		dicPic[str(x.title[:10]).replace("\"", "")] = urlString
+	    	except UnicodeEncodeError, e:
+	    		dicPic["Unknown Title"] = urlString
 	#for every string link in the picList
 	try:
 		for title, link in dicPic.iteritems():
@@ -95,10 +105,17 @@ def placeTag(subreddit, imageFile, corner):
 	#but before I do this I need to fix the size difference between each font
 	#font = fonts[randint(0, len(fonts) - 1)]
 	font  = windowsFonts[0] if isWindows else macFonts[randint(0, len(macFonts) - 1)]
+	for possFont in fonts:
+		#print fontDirectory + possFont
+		#print os.path.exists(fontDirectory + font)
+		if os.path.exists(fontDirectory + font):
+			font = possFont
+			#print font
+			break
+	font = fonts[2]
+
 	#setting up image and its attributes
-	print "font"
 	image = Image.open(imageFile).convert('RGBA')
-	print "open"
 	imageWidth = image.size[0]
 	imageHeight = image.size[1]
 	textBase = Image.new('RGBA', image.size, (255, 255, 255, 0))
@@ -106,8 +123,15 @@ def placeTag(subreddit, imageFile, corner):
 	#text base for the tag
 	Image.new('RGBA', image.size, (255,255, 255, 0))
 
+	#print "new image"
 	#make the font and the draw object
+	try:
+		fnt = ImageFont.truetype(fontDirectory + font, size=200)
+	except IOError, e:
+		print "got it"
+		print e
 	fnt = ImageFont.truetype(fontDirectory + font, size=200)
+	#print "get font"
 	fntHeight = fnt.getsize(subreddit)[1]
 	cornerPlacement = [(imageWidth / 48, -1), (imageWidth / 48, 47 * imageHeight / 48	- fntHeight)]
 	draw = ImageDraw.Draw(textBase)
@@ -120,12 +144,13 @@ def dateSorted(path):
     mtime = lambda f: os.stat(os.path.join(path, f)).st_mtime
     return list(sorted(os.listdir(path), key=mtime))
 
+ 
+
 def cleaner():
 	#str = "".replace('\\', '/')
 	#months = {"Jan" : 1, "Feb" : 2, "Mar" : 3, "Apr" : 4, "May" : 5,
 	#		  "Jun": 6, "Jul" : 7, "Aug" : 8, "Sep" : 9, "Oct" : 10,
-	#		  "Nov" : 11, "Dec" : 12}
-
+	#		  "Nov" : 11, "Dec" : 12
 	sortedPics = dateSorted(goodDirectory)
 	counter = 0
 	while (len(sortedPics) > 15):
