@@ -98,14 +98,14 @@ def placeTag(subreddit, imageFile, corner):
 	#but before I do this I need to fix the size difference between each font
 	#font = fonts[randint(0, len(fonts) - 1)]
 	font  = windowsFonts[0] if isWindows else macFonts[randint(0, len(macFonts) - 1)]
-	for possFont in fonts:
-		#print fontDirectory + possFont
-		#print os.path.exists(fontDirectory + font)
-		if os.path.exists(fontDirectory + font):
-			font = possFont
-			#print font
-			break
-	font = fonts[2]
+	# for possFont in fonts:
+	# 	#print fontDirectory + possFont
+	# 	#print os.path.exists(fontDirectory + font)
+	# 	if os.path.exists(fontDirectory + font):
+	# 		font = possFont
+	# 		#print font
+	# 		break
+	# font = fonts[2]
 
 	#setting up image and its attributes
 	image = Image.open(imageFile).convert('RGBA')
@@ -160,22 +160,22 @@ def setUp():
 def runner():	
 	if not os.path.exists(goodDirectory):
 		setUp()
-	if "y" == str(raw_input("Do you want to clean the folder?")):
+	if "y" == str(raw_input("Do you want to clean the folder?(y/n)")):
 		cleaner()
 	else:
-		subInput = str(raw_input("What subreddit do you want?"))
+		subInput = str(raw_input("What subreddit do you want?(don't include /r/)"))
 		sub = r.get_subreddit(subInput)
 		submissionType = {"day" : sub.get_top_from_day(limit=limit),
 				"week" : sub.get_top_from_week(limit=limit),
 				"hot" : sub.get_hot(limit=limit),
 				"all" : sub.get_top_from_all(limit=limit)}
-		if "y" == str(raw_input("Top from day?")):
+		if "y" == str(raw_input("Top from day?(y/n)")):
 			pullFrom__(submissionType["day"], subInput)
-		if "y" == str(raw_input("Top from week?")):
+		if "y" == str(raw_input("Top from week?(y/n)")):
 			pullFrom__(submissionType["week"], subInput)
-		if "y" == str(raw_input("Top from all?")):
+		if "y" == str(raw_input("Top from all?(y/n)")):
 			pullFrom__(submissionType["all"], subInput)
-		if "y" == str(raw_input("From Hot?")):
+		if "y" == str(raw_input("From Hot?(y/n)")):
 			pullFrom__(submissionType["hot"], subInput)
 
 runner()
