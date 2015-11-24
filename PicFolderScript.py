@@ -1,6 +1,11 @@
 ######### Imports and variable assignments ##########
 
+<<<<<<< HEAD
+
+import praw #reddit api wrapper. Without python it's just raw
+=======
 import praw #reddit api wrapper. Without python it's just raw=
+>>>>>>> master
 import urllib #used for downloading things and putting them places
 from PIL import Image #used for checking image specs
 import shutil #used for moving between directories
@@ -9,29 +14,38 @@ import time #used to pull time of file
 from PIL import ImageDraw, ImageFont #used for sub tagging
 from random import randint #used to get a random font
 from traceback import print_exception #debugging
+import platform # to check what os we are on
+=======
 
+>>>>>>> master
 user_agent = "RedditWallpaper 1.0 by /u/jbonzo200"
 r = praw.Reddit(user_agent=user_agent)
 dicPic = {}
 goodPics = []
 cont = True
 
+isWindows = platform.system() == "Windows"		
 
-rawDirectoryList = ["C:/Users/Ricky/Pictures/redditWallpaper/rawPics/", 
-						"D:/Users/Ricky/Pictures/redditWallpaper/rawPics/"] 
-goodDirectoryList = ["C:/Users/Ricky/Pictures/redditWallpaper/goodPics/", 
-						"D:/Users/Ricky/Pictures/redditWallpaper/goodPics/"]
+rawDirectoryList = ["C:/Users/%USERNAME%/Pictures/redditWallpaper/rawPics/",
+					"~/Pictures/redditWallpaper/rawPics/"] 
+goodDirectoryList = ["C:/Users/%USERNAME%/Pictures/redditWallpaper/goodPics/",
+					 "~/Pictures/redditWallpaper/goodPics/"]
 rawDirectory = ""
 goodDirectory = ""
 subInput = ""
 
 #pick the right directory
-for path in rawDirectoryList:
-	if os.path.exists(path):
-		rawDirectory = path
-for path in goodDirectoryList:
-	if os.path.exists(path):
-		goodDirectory = path
+# for path in rawDirectoryList:
+# 	if os.path.exists(os.path.expanduser(path)):
+# 		rawDirectory = os.path.expanduser(path)
+# for path in goodDirectoryList:
+# 	if os.path.exists(os.path.expanduser(path)):
+# 		goodDirectory = os.path.expanduser(path)
+
+rawDirectory = rawDirectoryList[0] if isWindows else rawDirectoryList[1]
+rawDirectory = os.path.expanduser(rawDirectory)
+goodDirectory = goodDirectoryList[0] if isWindows else goodDirectoryList[1]
+goodDirectory = os.path.expanduser(goodDirectory)
 
 limit = 15
 
@@ -81,15 +95,16 @@ def pullFrom__(submissions, sub):
 #will be placed on. Either top left (0) or 
 #bottom left (1)
 def placeTag(subreddit, imageFile, corner):
-	fontDirectory = "C:/Windows/Fonts/"
+	fontDirectory = "C:/Windows/Fonts/" if isWindows else "/Library/Fonts/"
 	
 	#list of fonts I like
-	fonts = ["BRADHITC.ttf", "CALIFR.ttf", "GOTHIC.ttf", "ChaparralPro-LightIt.ttf",
-			 "ITCEDSCR.ttf", "simfang.ttf", "IMPRISHA.ttf", "INFROMAN.ttf",]
+	windowsFonts = ["BRADHITC.ttf", "CALIFR.ttf", "GOTHIC.ttf", "ChaparralPro-LightIt.ttf",
+			 "ITCEDSCR.ttf", "simfang.ttf", "IMPRISHA.ttf", "INFROMAN.ttf"]
+	macFonts = ["Bradley Hand Bold.ttf", "Apple Chancery.ttf"]
 	#get random font from fonts list
 	#but before I do this I need to fix the size difference between each font
 	#font = fonts[randint(0, len(fonts) - 1)]
-	font = ""
+	font  = windowsFonts[0] if isWindows else macFonts[randint(0, len(macFonts) - 1)]
 	for possFont in fonts:
 		#print fontDirectory + possFont
 		#print os.path.exists(fontDirectory + font)
@@ -143,8 +158,15 @@ def cleaner():
 		sortedPics.remove(sortedPics[counter]) 
 		counter = counter + 1
 
+def setUp():
+	os.system("mkdir ~/Pictures/redditWallpaper/")
+	os.system("mkdir ~/Pictures/redditWallpaper/goodPics/")
+	os.system("mkdir ~/Pictures/redditWallpaper/rawPics/")
+
 ########## Runner ##########
-def runner():
+def runner():	
+	if not os.path.exists(goodDirectory):
+		setUp()
 	if "y" == str(raw_input("Do you want to clean the folder?")):
 		cleaner()
 	else:
@@ -239,4 +261,8 @@ all at the end with some kind of exit status
 It would be cool to figure out how to download and tag at the same time
 
 lol found it: http://stackoverflow.com/questions/18864859/python-executing-multiple-functions-simultaneously
+"""
+
+"""
+make a script so that it changes the settings for mac to have the screensaver and/or desktop 
 """
