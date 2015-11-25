@@ -171,9 +171,12 @@ def setUp():
 					tell application "System Events"
 					--RANDOM ROTATION OF A FOLDER OF IMAGES
 						tell current desktop
+							set userName to short user name of (system info) as string
+							set picturePath to "/Users/" & userName & "/Pictures/"
+							set goodPics to "redditWallpaper/goodPics"
 							set picture rotation to 1
 							set random order to true
-							set pictures folder to "/Users/$HOME/Pictures/redditWallpaper/goodPics/"
+							set pictures folder to (picturePath & goodPics)
 							set change interval to 900.0
 						end tell
 					end tell
