@@ -1,24 +1,33 @@
 ######### Imports and variable assignments ##########
 
 
-import praw #reddit api wrapper. Without python it's just raw
+import os #internal file use and system calls
+try:
+	import praw #reddit api wrapper. Without python it's just raw
+except ImportError, e:
+	print "PRAW is not installed\nInstalling PRAW..."
+	os.system("sudo pip install praw")
+	import praw
+try:
+	from PIL import Image, ImageDraw, ImageFont # used for checking image specs and for sub tagging
+except ImportError, e:
+	print "pillow is not installed\nInstalling pillow..."
+	os.system("sudo pip install pillow")
+	from PIL import Image, ImageDraw, ImageFont
 import urllib #used for downloading things and putting them places
-from PIL import Image #used for checking image specs
 import shutil #used for moving between directories
-import os #internal file use
 import time #used to pull time of file
-from PIL import ImageDraw, ImageFont #used for sub tagging
 from random import randint #used to get a random font
 from traceback import print_exception #debugging
 import platform # to check what os we are on
+from subprocess import Popen, PIPE # used to run applescript
+
 user_agent = "RedditWallpaper 1.0 by /u/jbonzo200"
 r = praw.Reddit(user_agent=user_agent)
 dicPic = {}
 goodPics = []
 cont = True
-
 isWindows = platform.system() == "Windows"		
-
 rawDirectoryList = ["C:/Users/%USERNAME%/Pictures/redditWallpaper/rawPics/",
 					"~/Pictures/redditWallpaper/rawPics/"] 
 goodDirectoryList = ["C:/Users/%USERNAME%/Pictures/redditWallpaper/goodPics/",
@@ -152,9 +161,25 @@ def cleaner():
 		counter = counter + 1
 
 def setUp():
-	os.system("mkdir ~/Pictures/redditWallpaper/")
-	os.system("mkdir ~/Pictures/redditWallpaper/goodPics/")
-	os.system("mkdir ~/Pictures/redditWallpaper/rawPics/")
+	os.system("mkdir " + goodDirectory[:len(goodDirectory) - len("goodPics/")])
+	os.system("mkdir " + goodDirectory)
+	os.system("mkdir " + rawDirectory)
+	if isWindows:
+		pass
+	else:
+		script = '''
+					tell application "System Events"
+					--RANDOM ROTATION OF A FOLDER OF IMAGES
+						tell current desktop
+							set picture rotation to 1
+							set random order to true
+							set pictures folder to "/Users/PearlTerminal/Pictures/redditWallpaper/goodPics/"
+							set change interval to 900.0
+						end tell
+					end tell
+				'''
+		osa = Popen(['osascript', '-'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+		osa.communicate(script)
 
 ########## Runner ##########
 def runner():	
