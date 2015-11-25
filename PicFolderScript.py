@@ -173,7 +173,7 @@ def setUp():
 						tell current desktop
 							set picture rotation to 1
 							set random order to true
-							set pictures folder to "/Users/PearlTerminal/Pictures/redditWallpaper/goodPics/"
+							set pictures folder to "/Users/$HOME/Pictures/redditWallpaper/goodPics/"
 							set change interval to 900.0
 						end tell
 					end tell
