@@ -26,7 +26,6 @@ user_agent = "RedditWallpaper 1.0 by /u/jbonzo200"
 r = praw.Reddit(user_agent=user_agent)
 dicPic = {}
 goodPics = []
-cont = True
 isWindows = platform.system() == "Windows"		
 rawDirectoryList = ["C:/Users/%USERNAME%/Pictures/redditWallpaper/rawPics/",
 					"~/Pictures/redditWallpaper/rawPics/"] 
@@ -87,7 +86,8 @@ def pullFrom__(submissions, sub):
 					#collects a list of added pictures for debugging 
 					goodPics.append(rawFile)
 					counter += 1
-		print counter
+		pulledPhrase = "picture pulled" if counter == 1 else "pictures pulled"
+		print "\t",counter, pulledPhrase
 	except IOError, e:
 		print rawFile[len(goodDirectory) - 1:]
 		print_exception(IOError, e, None)
@@ -125,15 +125,12 @@ def placeTag(subreddit, imageFile, corner):
 	#text base for the tag
 	Image.new('RGBA', image.size, (255,255, 255, 0))
 
-	#print "new image"
 	#make the font and the draw object
 	try:
 		fnt = ImageFont.truetype(fontDirectory + font, size=200)
 	except IOError, e:
-		print "got it"
 		print e
 	fnt = ImageFont.truetype(fontDirectory + font, size=200)
-	#print "get font"
 	fntHeight = fnt.getsize(subreddit)[1]
 	cornerPlacement = [(imageWidth / 48, -1), (imageWidth / 48, 47 * imageHeight / 48	- fntHeight)]
 	draw = ImageDraw.Draw(textBase)
@@ -190,13 +187,16 @@ def runner():
 		setUp()
 	if "y" == str(raw_input("Do you want to clean the folder?(y/n)")):
 		cleaner()
-	else:
+	pulling = True
+	while pulling:
 		subInput = str(raw_input("What subreddit do you want?(don't include /r/)"))
 		sub = r.get_subreddit(subInput)
-		submissionType = {"day" : sub.get_top_from_day(limit=limit),
-				"week" : sub.get_top_from_week(limit=limit),
-				"hot" : sub.get_hot(limit=limit),
-				"all" : sub.get_top_from_all(limit=limit)}
+		submissionType = {
+			"day" : sub.get_top_from_day(limit=limit),
+			"week" : sub.get_top_from_week(limit=limit),
+			"hot" : sub.get_hot(limit=limit),
+			"all" : sub.get_top_from_all(limit=limit)
+		}
 		if "y" == str(raw_input("Top from day?(y/n)")):
 			pullFrom__(submissionType["day"], subInput)
 		if "y" == str(raw_input("Top from week?(y/n)")):
@@ -205,6 +205,8 @@ def runner():
 			pullFrom__(submissionType["all"], subInput)
 		if "y" == str(raw_input("From Hot?(y/n)")):
 			pullFrom__(submissionType["hot"], subInput)
+		if not "y" == str(raw_input("Do you want to pull from another subreddit?(y/n)")):
+			pulling = False
 
 runner()
 
