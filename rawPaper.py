@@ -265,7 +265,7 @@ a certain width in proportion to the width of the picture
 
 """
 	For the watermark in pick a corner for the best placement when i download each picture.
-	So when each pciture is moved to ghe good directory it is displayed and prompts for the
+	So when each picture is moved to ghe good directory it is displayed and prompts for the
 	best corner so as not to cover important details of the picture
 
 	I've played with this idea but it seems to be a bit annoying. For now I'll keep it on the top left corner untill
@@ -285,4 +285,9 @@ a certain width in proportion to the width of the picture
 
 """
 	make a script so that it changes the settings for mac to have the screensaver and/or desktop
+"""
+
+
+"""
+    Add user artists tag
 """
