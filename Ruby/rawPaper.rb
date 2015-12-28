@@ -15,6 +15,7 @@ rescue
     system("gem install redd")
 ensure
     require 'redd'
+end
 require 'open-uri'  # used to download images
 
 
