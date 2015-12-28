@@ -8,7 +8,13 @@
     DONE:
         I need to find a way to download and put them in a directory.
 =end
-require 'redd'
+
+begin
+    require 'redd'
+rescue
+    system("gem install redd")
+ensure
+    require 'redd'
 require 'open-uri'  # used to download images
 
 
@@ -19,6 +25,9 @@ $raw_pics_path
 $home = ENV['HOME']
 $good_pics_path = "#{$home}/Pictures/rawPaper/goodPics/"
 $raw_pics_path = "#{$home}/Pictures/rawPaper/rawPics/"
+$working_directory
+$working_directory = Dir.pwd
+
 
 def authorize
     #authorization
@@ -32,11 +41,14 @@ end
 
 
 def set_up
-    # remember scope for home if you change it
+    # make the appropiate directories
     system("mkdir #{$home}/Pictures/rawPaper/")
     system("mkdir #{$good_pics_path}")
     system("mkdir #{$raw_pics_path}")
     system("mkdir #{$home}/Pictures/rawPaper/ruby/")
+
+    # change system settings
+    system("sh ../SystemPref")
 end
 
 def directory_exists?(path)
