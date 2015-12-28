@@ -22,7 +22,7 @@ from traceback import print_exception 	# debugging
 import platform 	# to check what os we are on
 from subprocess import Popen, PIPE, call 	# used to run applescript
 
-user_agent = "RedditWallpaper 1.0 by /u/jbonzo200"
+user_agent = "rawPaper 0.0.7 by /u/jbonzo200"
 r = praw.Reddit(user_agent=user_agent)
 dicPic = {}
 goodPics = []
