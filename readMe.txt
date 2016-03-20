@@ -3,4 +3,4 @@ If pip is not installed run:
 sudo python ./misc/get-pip.py in this directory
 sudo pip install pillow
 sudo pip install PRAW
-python PicFolderScript
+python gui.py
