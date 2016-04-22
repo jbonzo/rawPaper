@@ -30,19 +30,20 @@ r = praw.Reddit(user_agent=user_agent)
 dicPic = {}
 goodPics = []
 isWindows = platform.system() == "Windows"
-userPath = "C:/Users/%USERNAME%/" if isWindows else "~"
+userPath = "C:\\Users\\%USERNAME%\\" if isWindows else "~"
 userPath = os.path.expanduser(userPath)
 workingDirectory = os.getcwd()
 rawDirectoryList = [
-    "C:/Users/%USERNAME%/Pictures/redditWallpaper/rawPics/",
+    "C:\\Users\\%USERNAME%\\Pictures\\redditWallpaper\\rawPics\\",
     "~/Pictures/redditWallpaper/rawPics/"
 ]
 goodDirectoryList = [
-    "C:/Users/%USERNAME%/Pictures/redditWallpaper/goodPics/",
+    "C:\\Users\\%USERNAME%\\Pictures\\redditWallpaper\\goodPics\\",
     "~/Pictures/redditWallpaper/goodPics/"
 ]
 rawDirectory = ""
 goodDirectory = ""
+
 
 
 # pick the right directory
@@ -212,6 +213,7 @@ def cleaner():
 
 def setUp():
     os.system("mkdir " + goodDirectory[:len(goodDirectory) - len("goodPics/")])
+    print "mkdir " + goodDirectory[:len(goodDirectory) - len("goodPics/")]
     os.system("mkdir " + goodDirectory)
     os.system("mkdir " + rawDirectory)
     if isWindows:
@@ -226,6 +228,7 @@ def setUp():
 def runner():
     clear = "cls" if isWindows else "clear"
     clearScreen = lambda: os.system(clear)
+
     clearScreen()
     if not os.path.exists(goodDirectory):
         setUp()
@@ -253,7 +256,7 @@ def runner():
             pulling = False
 
 
-# runner()
+runner()
 
 from gui import *
 
