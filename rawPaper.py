@@ -31,14 +31,15 @@ dicPic = {}
 goodPics = []
 isWindows = platform.system() == "Windows"
 userPath = "C:\\Users\\%USERNAME%\\" if isWindows else "~"
+userName = '' if not isWindows else os.getenv('username')
 userPath = os.path.expanduser(userPath)
 workingDirectory = os.getcwd()
 rawDirectoryList = [
-    "C:\\Users\\%USERNAME%\\Pictures\\redditWallpaper\\rawPics\\",
+    "C:\\Users\\{0}\\Pictures\\redditWallpaper\\rawPics\\".format(userName),
     "~/Pictures/redditWallpaper/rawPics/"
 ]
 goodDirectoryList = [
-    "C:\\Users\\%USERNAME%\\Pictures\\redditWallpaper\\goodPics\\",
+    "C:\\Users\\{0}\\Pictures\\redditWallpaper\\goodPics\\".format(userName),
     "~/Pictures/redditWallpaper/goodPics/"
 ]
 rawDirectory = ""
