@@ -30,19 +30,13 @@ r = praw.Reddit(user_agent=user_agent)
 dicPic = {}
 goodPics = []
 isWindows = platform.system() == "Windows"
-userPath = "C:\\Users\\%USERNAME%\\" if isWindows else "~"
-userPath = os.path.expanduser(userPath)
+
 workingDirectory = os.getcwd()
-rawDirectoryList = [
-    "C:\\Users\\%USERNAME%\\Pictures\\redditWallpaper\\rawPics\\",
-    "~/Pictures/redditWallpaper/rawPics/"
-]
-goodDirectoryList = [
-    "C:\\Users\\%USERNAME%\\Pictures\\redditWallpaper\\goodPics\\",
-    "~/Pictures/redditWallpaper/goodPics/"
-]
-rawDirectory = ""
-goodDirectory = ""
+
+userRoot = '%USERPROFILE%' if isWindows else '~'
+baseDirectory = os.path.expandvars(os.path.join(userRoot, 'Pictures', 'redditWallpaper'))
+rawDirectory = os.path.join(baseDirectory, 'rawPics', '')
+goodDirectory = os.path.join(baseDirectory, 'goodPics', '')
 
 
 
@@ -53,11 +47,6 @@ goodDirectory = ""
 # for path in goodDirectoryList:
 # 	if os.path.exists(os.path.expanduser(path)):
 # 		goodDirectory = os.path.expanduser(path)
-
-rawDirectory = rawDirectoryList[0] if isWindows else rawDirectoryList[1]
-rawDirectory = os.path.expanduser(rawDirectory)
-goodDirectory = goodDirectoryList[0] if isWindows else goodDirectoryList[1]
-goodDirectory = os.path.expanduser(goodDirectory)
 
 limit = 20
 
@@ -217,7 +206,12 @@ def setUp():
     os.system("mkdir " + goodDirectory)
     os.system("mkdir " + rawDirectory)
     if isWindows:
-        pass
+    	print "****************************************"
+        print "I am not perfect, my creators didn't give me the power to change your wallpaper settings automatically, so you have to do it."
+        print "(Windows 10) Open settings -> Personalization -> Background"
+        print "\tSet background to 'Slideshow' and choose album ('" + goodDirectory + "') for your slideshow"
+        print "If you're not on Windows 10 yet then hurry up and upgrade and stop being so paranoid"
+        print "****************************************"
     else:
         call(["osascript", workingDirectory + "/SystemPref.scpt"])
 
